@@ -3,32 +3,18 @@ import numpy as np
 import socket
 from multiprocessing import Process
 
-
-class ATISensor():
-    def __init__(self, ip="192.168.50.101"):
-        self.sensor = Sensor(ip)
-        self.biasValue = None
-        self.BiasSensor()
-
-    def BiasSensor(self):
-        self.biasValue = self.GetValue(raw=True)
-
-    def GetValue(self, n=10, raw=False):
-        if raw:
-            return np.around(np.array(self.sensor.tare(n)) / 1000000)
-        else:
-            return np.around(np.array(self.sensor.tare(n)) / 1000000) - self.biasValue
+from ..perception import Perception
 
 
-class FT300Sensor():
+class FT300Sensor(Perception):
     def __init__(self, ip='192.168.1.102', port=63351):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((ip, port))
         self.start_threading()  # use to clear the buffer to make the force data is latest
         self.biasValue = None
-        self.BiasSensor()
+        self.bias_sensor()
 
-    def ReadValue(self, n=10):
+    def _read_value(self, n=10):
         ret = []
         for _ in range(n):
             data = self._receive()
@@ -48,14 +34,14 @@ class FT300Sensor():
 
         return ave_ret
 
-    def BiasSensor(self):
-        self.biasValue = self.GetValue(raw=True)
+    def bias_sensor(self):
+        self.biasValue = self.get_data(raw=True)
 
-    def GetValue(self, n=10, raw=False):
+    def get_data(self, n=10, raw=False):
         if raw:
-            return np.around(np.array(self.ReadValue(n)))
+            return np.around(np.array(self._read_value(n)))
         else:
-            return np.around(np.array(self.ReadValue(n))) - self.biasValue
+            return np.around(np.array(self._read_value(n))) - self.biasValue
 
     def _receive(self):
         return str(self.s.recv(1024))
@@ -85,10 +71,12 @@ class FT300Sensor():
         self._send(self.STOP_COMMAND)  # Stop receiving data
         self.thread.join()
 
+    def close(self):
+        pass
 
 if __name__ == '__main__':
     fts = FT300Sensor()
 
     while True:
-        r = fts.GetValue()
+        r = fts.get_data()
         print(r)
