@@ -68,7 +68,7 @@ class FT300Sensor(Perception):
 
     def stop_threading(self):
         self.stream = False
-        self._send(self.STOP_COMMAND)  # Stop receiving data
+        # self._send(self.STOP_COMMAND)  # Stop receiving data
         self.thread.join()
 
     def close(self):

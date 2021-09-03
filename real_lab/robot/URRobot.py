@@ -4,6 +4,7 @@ from real_lab.end_effector.robotiq_gripper_control import RobotiqGripper
 from rtde_control import RTDEControlInterface as RTDEControl
 from rtde_receive import RTDEReceiveInterface as RTDEReceive
 
+
 class Robot():
     def __init__(self, ip='192.168.1.102'):
         self.rob_c = RTDEControl(ip)
@@ -72,7 +73,7 @@ class Robot():
         '''
         focus on position
         Args:
-            target:
+            tar:
             threshold:
 
         Returns:
