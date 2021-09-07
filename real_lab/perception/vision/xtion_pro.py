@@ -8,7 +8,6 @@ import cv2
 import time
 
 from .camera import Camera
-from robot_tool.utils.logger import warn, error
 
 DEFAULT_XTION_CAMERA_INTRINSICS = np.array([[570.3422241210938, 0., 319.5], [0., 570.3422241210938, 239.5], [0., 0., 1.]])
 

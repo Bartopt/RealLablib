@@ -5,7 +5,6 @@ from collections import Iterable
 from scipy.spatial.transform import Rotation as R
 
 from .camera import Camera
-from robot_tool.utils.logger import warn, error
 
 DEFAULT_REALSENSE_CAMERA_ROTATION = np.array([-0.874125361082, -0.0270816605365, -0.00440328852424, 0.484924785742])
 DEFAULT_REALSENSE_CAMERA_TRANSLATION = np.array([[-0.0130321939147], [-1.22888842636], [0.479256365879]])
@@ -109,7 +108,7 @@ class RealSense(Camera):
         if isinstance(self.post_process, Iterable):
             tmp_frame = frame.copy()
             for f in self.post_process:
-                assert isinstance(f, rs.filter), error("Each element in post_process should be 'rs.filter'")
+                assert isinstance(f, rs.filter), "Each element in post_process should be 'rs.filter'"
                 tmp_frame = f.process(tmp_frame)
             return tmp_frame
         elif isinstance(self.post_process, rs.filter):
@@ -118,8 +117,7 @@ class RealSense(Camera):
             # Do nothing
             return frame
         else:
-            error("post_process should be one of '[rs.filter, ...]', 'rs.filter', or None")
-            raise TypeError
+            raise TypeError("post_process should be one of '[rs.filter, ...]', 'rs.filter', or None")
 
     def close(self):
         self.pipeline.stop()

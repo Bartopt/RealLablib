@@ -2,7 +2,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 from .camera import Camera
-from robot_tool.perception.vision.mech_eye_api import CameraClient
+from ..mech_eye_api import CameraClient
 
 
 DEFAULT_MECHEYE_CAMERA_ROTATION = np.array([-0.998139915692, -0.0137152080259, 0.058834506008, 0.00819162216657])
